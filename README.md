@@ -37,10 +37,14 @@ More info can be found at [http://opencircuitdesign.com/netgen/index.html](http:
 Xschem is a schematic capture program <br /><br />
 Install steps:
 ```
-$  git clone https://github.com/StefanSchippers/xschem.git xschem_git
-$	./configure
-$  make
-$  sudo make install
+$  git clone https://github.com/StefanSchippers/xschem.git 
+$ sudo apt-get install flex
+$ sudo apt-get install bison
+$ sudo apt-get install libxpm-dev
+$ cd xschem.git
+$ ./configure
+$ make
+$ sudo make install
 ```
 More info can be found at [http://repo.hu/projects/xschem/index.html](http://repo.hu/projects/xschem/index.html)
 
@@ -88,20 +92,21 @@ export CC=/usr/bin/gcc
 export CXX=/usr/bin/g++
 git clone https://github.com/ALIGN-analoglayout/ALIGN-public
 cd ALIGN-public
-
-#Create a Python virtualenv
+sudo apt -y install python3.10-venv
+sudo apt-get -y install python3-pip
 python3 -m venv general
 source general/bin/activate
 python3 -m pip install pip --upgrade
-
-# Install ALIGN as a USER
-pip install -v .
-
-# Install ALIGN as a DEVELOPER
-pip install -e .
-
+pip install pandas
+pip install scipy
+pip install nltk
+pip install gensim
 pip install setuptools wheel pybind11 scikit-build cmake ninja
+pip install -v .
+pip install -e .
 pip install -v -e .[test] --no-build-isolation
+pip install wheel setuptools pip --upgrade
+pip3 install wheel setuptools pip --upgrade
 pip install -v --no-build-isolation -e . --no-deps --install-option='-DBUILD_TESTING=ON'
 ```
 
@@ -130,10 +135,7 @@ Running a EXAMPLE:
 ```
 schematic2layout.py ../examples/telescopic_ota -p ../pdks/FinFET14nm_Mock_PDK/
 ```
-Running a EXAMPLE on Sky130pdk
-```
-schematic2layout.py ../ALIGN-pdk-sky130/examples/five_transistor_ota -p ../pdks/SKY130_PDK/
-```
+
 
 ![align](https://user-images.githubusercontent.com/118599201/218081159-ee9151d3-55d1-4a7c-b54f-7b16d566eb81.PNG)
 
