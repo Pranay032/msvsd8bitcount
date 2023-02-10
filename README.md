@@ -81,8 +81,69 @@ $  make
 $  sudo make install
 ```
 
-Now that we have all the necessary tools installed let's understand the design flow!
-## Chapter 1 - Understanding the design flow
+
+#### Installing ALIGN:
+
+Use the following commands to install ALIGN tool.
+
+```
+export CC=/usr/bin/gcc
+export CXX=/usr/bin/g++
+git clone https://github.com/ALIGN-analoglayout/ALIGN-public
+cd ALIGN-public
+
+#Create a Python virtualenv
+python3 -m venv general
+source general/bin/activate
+python3 -m pip install pip --upgrade
+
+# Install ALIGN as a USER
+pip install -v .
+
+# Install ALIGN as a DEVELOPER
+pip install -e .
+
+pip install setuptools wheel pybind11 scikit-build cmake ninja
+pip install -v -e .[test] --no-build-isolation
+pip install -v --no-build-isolation -e . --no-deps --install-option='-DBUILD_TESTING=ON'
+```
+
+
+#### Running ALIGN TOOL
+
+Everytime we start running tool in new terminal run following commands.
+
+```
+python3 -m venv general
+source general/bin/activate
+```
+Commands to run ALIGN (goto ALIGN-public directory)
+
+
+```
+mkdir work
+cd work
+```
+General syntax to give inputs
+```
+schematic2layout.py <NETLIST_DIR> -p <PDK_DIR> -c
+```
+
+Running a EXAMPLE:
+```
+schematic2layout.py ../examples/telescopic_ota -p ../pdks/FinFET14nm_Mock_PDK/
+```
+Running a EXAMPLE on Sky130pdk
+```
+schematic2layout.py ../ALIGN-pdk-sky130/examples/five_transistor_ota -p ../pdks/SKY130_PDK/
+```
+
+![align](https://user-images.githubusercontent.com/118599201/218081159-ee9151d3-55d1-4a7c-b54f-7b16d566eb81.PNG)
+
+![allign2](https://user-images.githubusercontent.com/118599201/218081170-3dff266b-c388-458e-98dc-8e220d381315.PNG)
+
+
+
 
 ### Verifiying the open_pdk installation
 An initial working directory can be made by copying the required files as follows:
@@ -101,23 +162,23 @@ $ cd ../netgen
 $ cp /usr/local/share/pdk/sky130A/libs.tech/netgen//sky130A_setup.tcl .
 ```
 Checking if magic works
-![mag_test](Resources/Lab1/mag_test.png)<br /><br />
+![magic](https://user-images.githubusercontent.com/118599201/218081128-4bb784cd-d35d-4bb8-9968-9c845123b25e.PNG)
 Checking if xschem works
-![xschem_test](Resources/Lab1/xschem_test.png)<br /><br />
+![1](https://user-images.githubusercontent.com/118599201/218081254-72d2f874-ce10-4036-be1e-cdbe4d58e793.PNG)
 Checking if netgen works
-![netgen_test](Resources/Lab1/netgen_test.png)<br /><br />
+![netgen](https://user-images.githubusercontent.com/118599201/218081144-99bbcbba-b2af-4d8f-a7b1-7c5c08db3758.PNG)
 Checking if ngspice works
-![spice_test](Resources/Lab1/spice_test.png)<br /><br />
+![ngspice](https://user-images.githubusercontent.com/118599201/218081183-d16783d4-ef8d-4983-a94f-7acd80745416.PNG)
 ### Creating inverter schematic using xschem
 An initial schematic is made by placing components from the open_pdk library<br />
 The required changes to the properties of the device can be made here and will automatically reflect in the layout
-![xshem_inv](Resources/Lab1/xshem_inv.png)<br /><br />
+![3](https://user-images.githubusercontent.com/118599201/218081860-e59c0b58-f5f7-4200-bf60-187776081a64.PNG)
 Convert the schematic to a symbol
-![xshem_sym](Resources/Lab1/xshem_sym.png)<br /><br />
+
 Using the symbol, we can create an independent test bench to simulate the circuit
-![xshem_tb](Resources/Lab1/xshem_tb.png)<br /><br />
+
 ### Creating and simulating testbench Schematic
 The circuit can be simulated in ngspice. *make sure to disable .subckt in the simulation tab for the netlist generated for the sim*
-![xschem_sim](Resources/Lab1/xschem_sim.png)
+
 ### Creating inverter layout in Magic and exporting its netlist
-The original schematic can be used to export a netlist, which can be imported into magic to create the layout. <br /><br />
+The original schematic can be used to export a netlist, which can be imported into magic to create the layout.
