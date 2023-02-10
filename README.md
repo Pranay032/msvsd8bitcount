@@ -7,10 +7,7 @@ To adequately utilize the open source skywater130 pdk and understand the design 
 - ngspice
 - xschem
 - netgen
-![toolchains](Resources/Lab1/toolchains.png)
 
-*Note: open_pdk has to be installed last so it can correctly associate the xschem and magic directories.*
-*Note: if the configure step fails during any process, its most likely due to missing additional packages, and they need to be installed (preferably from source) to complete the installation*
 
 ### Magic
 Magic is an open-source VLSI layout tool.<br /><br />
