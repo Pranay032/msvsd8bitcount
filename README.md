@@ -1,5 +1,5 @@
 # msvsd8bitcount
-## week-0 - Getting the tools
+## WEEK-0 - Getting the tools
 
 To adequately utilize the open source skywater130 pdk and understand the design flow, we first require to install all the tools, which are
 - open_pdk
