@@ -99,7 +99,8 @@ $ cd ../mag
 $ cp /usr/local/share/pdk/sky130A/libs.tech/magic/sky130A.magicrc .magicrc
 $ cd ../netgen
 $ cp /usr/local/share/pdk/sky130A/libs.tech/netgen//sky130A_setup.tcl .
-```Checking if magic works
+```
+Checking if magic works
 ![mag_test](Resources/Lab1/mag_test.png)<br /><br />
 Checking if xschem works
 ![xschem_test](Resources/Lab1/xschem_test.png)<br /><br />
