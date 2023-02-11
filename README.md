@@ -176,8 +176,92 @@ Convert the schematic to a symbol
 
 Using the symbol, we can create an independent test bench to simulate the circuit
 
-### Creating and simulating testbench Schematic
-The circuit can be simulated in ngspice. *make sure to disable .subckt in the simulation tab for the netlist generated for the sim*
+#  Simulation of Inverter using Xschem and Ngspice
+Invoke Xschem by typing `xschem` 
 
-### Creating inverter layout in Magic and exporting its netlist
-The original schematic can be used to export a netlist, which can be imported into magic to create the layout.
+
+## 3.a Pre-layout Simulation using Xschem and Ngspice
+
+### 3.a.i. DC Analaysis of CMOS inverter
+
+To create the inverter schematic in Xschem, follow these steps:
+
+1 .Open Xschem and create a new schematic file.
+
+2 . Add the PMOS and NMOS components to the schematic using the "Add Component" feature in Xschem.
+
+3 .Assign the process corner information from the TT_MODELS to the PMOS and NMOS components in the schematic.
+
+4 .Connect the PMOS and NMOS components to create the inverter circuit. The PMOS should be connected to the input and the NMOS should be connected to the output.
+
+5 . Add the power supply and ground connections to the schematic.
+
+6 .Verify that the connections and component values are correct and that the schematic meets the desired specifications.
+
+7 .Save the schematic and test the inverter circuit using simulation tools in Xschem.
+
+Note: The exact steps for creating the schematic in Xschem may vary depending on the version of the software and the specific process corner information in the TT_MODELS.
+Contents of TT_MODELS
+```
+name= TT_MODELS1
+only_toplevel=true
+format="tcleval(@value)"
+** opencircuitdesign pdks install
+.lib $::SKYWATER_MODELS/sky130.lib.spice tt
+"
+spice_ignore=false
+```
+DC analysis is done by using the `.dc` command using `code_shown.sym` from components.
+```
+.dc Vin 0 1.8 0.01
+.save all
+```
+The schematic is as shown.
+
+![latest](https://user-images.githubusercontent.com/118599201/218233566-2a70767a-5008-4327-bf6d-9960362aa29d.PNG)
+
+
+Go to `Options> Spice netlist` to set the netlist option. Click on `Netlist` from the menu to generate a spice file for the schematic created. Click on `Simulate` to run the simulation and obtain the voltage-transfer characteristic(VTC) for the inverter.
+
+![plot](https://user-images.githubusercontent.com/118599201/218231976-f97e5396-cbb7-47d0-b54d-cad7ebdbdb50.PNG)
+
+
+From the VTC.
+
+$V_{OL}$= 0 V, $V_{IL}$= 750 mV V, $V_{IH}$= 921.8 mA V, $V_{OH}$= 1.8 V
+
+Noise margins
+
+NML = $V_{IL}$ - $V_{OL}$= 750 mV
+
+NMH = $V_{OH}$ - $V_{IH}$= 878 mV
+
+
+###  Transient Analaysis of CMOS inverter
+The transient analysis of the inverter can be obtained by adding `.tran ` in the `code_shown.sym` block.
+
+![tran](https://user-images.githubusercontent.com/118599201/218231984-986bd1ef-2f55-4b21-8993-e9a0a0757337.PNG)
+Go to `Options> Spice netlist` to set the netlist option. Click on `Netlist` from the menu to generate a spice file for the schematic created. Click on `Simulate` to run the simulation and obtain the out vs time and in vs time.
+
+![tran_out](https://user-images.githubusercontent.com/118599201/218231989-4a6c64a7-f42d-4301-a587-0bbf9a383415.PNG)
+The graph shows the input and output variations with time.
+![tran-0ut2](https://user-images.githubusercontent.com/118599201/218231992-e00a2f16-2d5d-461b-9af4-0de1233c9142.PNG)
+
+The timing parameters are calculated as
+
+Rise time = **time(@80 % of Vout)** - **time(@20% of Vout)**
+
+Fall time = **time(@20 % of Vout)** - **time(@80% of Vout)**
+
+Cell Rise Delay =**time taken by output to rise to its 50% value** - **time taken by the input to fall to its 50% value**
+
+Cell Rise Delay =**time taken by output to fall to its 50% value** - **time taken by the input to rise to its 50% value**
+
+The timing parameters obtained from pre-layout simulations is tabulated below.
+
+| Parameter    | Value| 
+|----------|-----|
+|Rise Time|82.1 ps|
+|Fall Time|4.1 ps|
+|Cell Rise Delay|66.6 ps|
+|Cell Fall Delay|56.3 ps|
