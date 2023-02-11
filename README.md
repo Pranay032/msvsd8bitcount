@@ -54,7 +54,7 @@ $ ./configure
 $ make
 $ sudo make install
 ```
-More info can be found at [http://repo.hu/projects/xschem/index.html](http://repo.hu/projects/xschem/index.html)
+
 
 ### Ngspice
 ![image](https://user-images.githubusercontent.com/49194847/138070431-d95ce371-db3b-43a1-8dbe-fa85bff53625.png)
@@ -72,7 +72,7 @@ After downloading the tarball from [https://sourceforge.net/projects/ngspice/fil
  $ make
  $ sudo make install
 ```
-More info can be found at [https://ngspice.sourceforge.io/index.html](https://ngspice.sourceforge.io/index.html)
+
 
 Please note that to view the simulation graphs of ngspice, xterm is required and can be installed using.
 ```
