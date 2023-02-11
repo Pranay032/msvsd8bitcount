@@ -82,7 +82,11 @@ $ sudo apt-get install xterm
 
 ### open_pdk
 
-Open_PDKs is distributed with files that support the Google/SkyWater sky130 open process description [https://github.com/google/skywater-pdk](https://github.com/google/skywater-pdk). Open_PDKs will set up an environment for using the SkyWater sky130 process with open-source EDA tools and tool flows such as magic, qflow, openlane, netgen, klayout, etc.<br /><br />
+A process design kit (PDK) is a set of files used within the semiconductor industry to model a fabrication process for the design tools used to design an integrated circuit. The PDK is created by the foundry defining a certain technology variation for their processes. It is then passed to their customers to use in the design process.
+
+The PDK we are going to use for this BGR is Google Skywater-130 (130 nm) PDK.
+![image](https://user-images.githubusercontent.com/49194847/138075630-d1bdacac-d37b-45d3-88b5-80f118af37cd.png)
+
 Install steps:
 ```
 $  git clone git://opencircuitdesign.com/open_pdks
