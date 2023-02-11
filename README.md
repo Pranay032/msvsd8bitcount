@@ -180,9 +180,9 @@ Using the symbol, we can create an independent test bench to simulate the circui
 Invoke Xschem by typing `xschem` 
 
 
-## 3.a Pre-layout Simulation using Xschem and Ngspice
+##  Pre-layout Simulation using Xschem and Ngspice
 
-### 3.a.i. DC Analaysis of CMOS inverter
+###  DC Analaysis of CMOS inverter
 
 To create the inverter schematic in Xschem, follow these steps:
 
