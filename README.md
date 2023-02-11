@@ -10,7 +10,10 @@ To adequately utilize the open source skywater130 pdk and understand the design 
 
 
 ### Magic
-Magic is an open-source VLSI layout tool.<br /><br />
+![image](https://user-images.githubusercontent.com/49194847/138071384-a2c83ba4-3f9c-431a-98da-72dc2bba38e7.png)
+
+ [Magic](http://opencircuitdesign.com/magic/) is a VLSI layout tool.
+
 Install steps:
 ```
 $  git clone git://opencircuitdesign.com/magic
@@ -19,10 +22,12 @@ $	 ./configure
 $  make
 $  sudo make install
 ```
-More info can be found at [http://opencircuitdesign.com/magic/index.html](http://opencircuitdesign.com/magic/index.html)
+
 
 ### Netgen
-Netgen is a tool for comparing netlists, a process known as LVS, which stands for "Layout vs. Schematic" <br /><br />
+![image](https://user-images.githubusercontent.com/49194847/138073573-a819cc67-7643-4ecf-983d-454d99ec5443.png)
+
+[Netgen](http://opencircuitdesign.com/netgen/) is a tool for comparing netlists, a process known as LVS, which stands for "Layout vs. Schematic". This is an important step in the integrated circuit design flow, ensuring that the geometry that has been laid out matches the expected circuit.
 Install steps:
 ```
 $  git clone git://opencircuitdesign.com/netgen
@@ -31,10 +36,13 @@ $	./configure
 $  make
 $  sudo make install
 ```
-More info can be found at [http://opencircuitdesign.com/netgen/index.html](http://opencircuitdesign.com/netgen/index.html)
+
 
 ### Xschem
-Xschem is a schematic capture program <br /><br />
+![image](https://user-images.githubusercontent.com/43693407/143311382-8cd3c1c9-dd07-4179-892d-52e9cf71e5a7.png)
+
+[Xschem](http://repo.hu/projects/xschem/xschem_man/xschem_man.html) is a schematic capture program that allows to interactively enter an electronic circuit using a graphical and easy to use interface. When the schematic has been created a circuit netlist can be generated for simulation.
+
 Install steps:
 ```
 $  git clone https://github.com/StefanSchippers/xschem.git 
@@ -49,7 +57,9 @@ $ sudo make install
 More info can be found at [http://repo.hu/projects/xschem/index.html](http://repo.hu/projects/xschem/index.html)
 
 ### Ngspice
-ngspice is the open-source spice simulator for electric and electronic circuits.<br /><br />
+![image](https://user-images.githubusercontent.com/49194847/138070431-d95ce371-db3b-43a1-8dbe-fa85bff53625.png)
+
+[Ngspice](http://ngspice.sourceforge.net/devel.html) is the open source spice simulator for electric and electronic circuits.
 Install steps:<br />
 
 After downloading the tarball from [https://sourceforge.net/projects/ngspice/files/](https://sourceforge.net/projects/ngspice/files/) to a local directory, unpack it using:
