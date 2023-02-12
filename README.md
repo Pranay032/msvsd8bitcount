@@ -263,19 +263,19 @@ The graph shows the input and output variations with time.
 
 The timing parameters are calculated as
 
-Rise time = **time(@80 % of Vout)** - **time(@20% of Vout)**
+Rise time = time(80 % of Vout) - time(20% of Vout)
 
-Fall time = **time(@20 % of Vout)** - **time(@80% of Vout)**
+Fall time = time(20 % of Vout) - time(80% of Vout)
 
-Cell Rise Delay =**time taken by output to rise to its 50% value** - **time taken by the input to fall to its 50% value**
+Cell Rise Delay =Time taken by output to rise to its 50% value - Time taken by the input to fall to its 50% value
 
-Cell Rise Delay =**time taken by output to fall to its 50% value** - **time taken by the input to rise to its 50% value**
+Cell Rise Delay =time taken by output to fall to its 50% value - time taken by the input to rise to its 50% value
 
 The timing parameters obtained from pre-layout simulations is tabulated below.
 
 | Parameter    | Value| 
 |----------|-----|
-|Rise Time|82.1 ps|
-|Fall Time|4.1 ps|
-|Cell Rise Delay|66.6 ps|
-|Cell Fall Delay|56.3 ps|
+|Rise Time|80.1 ps|
+|Fall Time|4.0 ps|
+|Cell Rise Delay|64.6 ps|
+|Cell Fall Delay|55.3 ps|
