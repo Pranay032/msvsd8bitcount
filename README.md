@@ -84,7 +84,7 @@ $ sudo apt-get install xterm
 
 A process design kit (PDK) is a set of files used within the semiconductor industry to model a fabrication process for the design tools used to design an integrated circuit. The PDK is created by the foundry defining a certain technology variation for their processes. It is then passed to their customers to use in the design process.
 
-The PDK we are going to use for this BGR is Google Skywater-130 (130 nm) PDK.
+The PDK we are going to use for this Project is Google Skywater-130 (130 nm) PDK.
 ![image](https://user-images.githubusercontent.com/49194847/138075630-d1bdacac-d37b-45d3-88b5-80f118af37cd.png)
 
 Install steps:
