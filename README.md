@@ -275,10 +275,10 @@ The timing parameters obtained from pre-layout simulations is tabulated below.
 
 rise time - 10ps
 fall time - 10ps
- pre-layout inverer delay values delay = 11.29ps
+pre-layout inverer delay values delay = 11.29ps
 
 ## Creation of Layout using inverter schematic in layout tool MAGIC
-Create a working directory with sky130A.tech, .xschemrc and .sky130magicrc files or you can import these files to the MAGIC directory itself. Either way open the working directory and use the following command
+If you want to use the following command, you'll need to set up a working directory first. This directory should include the sky130A.tech, .xschemrc, and .sky130magicrc files. Alternatively, you can import these files directly into the MAGIC directory. Once you have set up the working directory, simply open it and enter the command.
 ```
 'MAGIC -T sky130A.tech
 ```
@@ -306,18 +306,12 @@ ext2spice lvs
 ext2spice cthresh 0 rthresh 0
 ext2spice
 ```
-Now, we can close magic.
-
-If we run an ls in this directory we should see our .ext files and .mag files for the 
-circuit - inverter.mag inverter.ext
-We can also see a .spice netlist. This inverter.spice netlist generated post layout contains the parasitics that were absent in pre-layout netlist.
-
 
 Now we need to use our pre-layout spice witht he post-layout parasitics netlist and perform spice simulations.
 - Step I
 Paste the pre-layout netlist of inverter testbench into the magic generated inverter spice netlist
 ### Pre- Layout Inverter  Spice Netlist
-'''
+```
 ** sch_path: /home/pranay/Desktop/vsd/Lab1_and/xschem/inverter_pr.sch
 **.subckt inverter_pr vin vout
 *.ipin vin
@@ -357,9 +351,9 @@ XM1 vout vin vss vss sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad='int((nf+1)/2) *
 
 .GLOBAL GND
 .end
-'''
-After selectively pasting this netlist into the inverter.spice generated(extracted) from Magic Tool, the inverter.spice netlist looks like this
-'''
+```
+After extracting the netlist from the Magic Tool, selectively paste the desired section into the inverter.spice file. The resulting netlist in inverter.spice will look like this:
+```
 ** sch_path: /home/pranay/Desktop/vsd/Lab1_and/xschem/inverter_pr.sch
 **.subckt inverter_pr vin vout
 *.ipin vin
@@ -419,8 +413,8 @@ C11 VP VSUBS 0.71fF
 C12 XM1/w_n211_n319# VSUBS 1.11fF 
 
 .ends
-'''
-Open inverter.spice with ngspice
+```
+Invoke inverter.spice with ngspice
 ```
 ngspice inverter.spice
 ```
@@ -436,16 +430,14 @@ Click and drag to expand the plots until the "vin" and "vout" pulses are far apa
 Select the 50% rise points (approximately) and expand at those points.
 Click on the two plots to display the x-coordinate (time) and y-coordinate (voltage) on ngspice.
 Subtract the x-coordinates to get the required delay.
+
 ![out](https://user-images.githubusercontent.com/118599201/219823467-7d43b80d-55c9-4f52-9062-318d9d34420d.PNG)
 Post Layout Delay = 1.02765 - 1.01551 = 0.01214 (12.14 ps)
 
-### Comparison of pre-LAYOUT  and post-LAYOUT
+### Inspection of pre-LAYOUT  and post-LAYOUT
 
 Input pulse specification in both 
 - Rise Time- 10ps
 - Fall Time- 10ps
-- On time- 1ns
-- Period- 2ns
-
 - Pre-Layout Delay Vout-Vin - 11.29ps
 - Post-Layout Delay Vout-Vin - 12.14ps
