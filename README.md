@@ -293,6 +293,7 @@ Now we hover over the pins/fets and press i and then press m at the location we 
 
 Now route the metal1 layer such that the layout is DRC free
 ![lay](https://user-images.githubusercontent.com/118599201/219821839-91ea69ce-7a44-4ef7-bcf6-47c64964be96.png)
+
 Now, go to File --> save and select autowrite. Go to the  window and type the following:
 ```
 extract do local
@@ -432,6 +433,7 @@ Click on the two plots to display the x-coordinate (time) and y-coordinate (volt
 Subtract the x-coordinates to get the required delay.
 
 ![out](https://user-images.githubusercontent.com/118599201/219823467-7d43b80d-55c9-4f52-9062-318d9d34420d.PNG)
+
 Post Layout Delay = 1.02765 - 1.01551 = 0.01214 (12.14 ps)
 
 ### Inspection of pre-LAYOUT  and post-LAYOUT
