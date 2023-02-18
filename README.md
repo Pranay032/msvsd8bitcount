@@ -292,6 +292,9 @@ The metal input and output pins are imported and the nfet and pfet is imported.
 
 To place pins and FETs in the desired location, hover over them and press "i" to select them, then press "m" to place them. Once you have placed them, use the metal1 layer to route the layout in a way that is free of design rule check (DRC) violations.
 
+Identify and fix errors: Review the DRC results and identify any errors or violations that need to be fixed. This may include issues such as overlapping polygons, minimum feature size violations, or other errors.
+
+Re-run DRC: After you have made changes to the layout, re-run the DRC to make sure that it is now DRC clean. Repeat the process until the layout passes the DRC without any errors.
 
 
 ![lay](https://user-images.githubusercontent.com/118599201/219821839-91ea69ce-7a44-4ef7-bcf6-47c64964be96.png)
@@ -304,6 +307,7 @@ extract all
 To extract files and save them to a local directory, use the instruction "Extract do local." Then, use the command "extract all" to actually perform the extraction.
 
 If you specifically need to extract files for lvs in the spice format, run the following commands.
+
 ```
 ext2spice lvs
 ext2spice cthresh 0 rthresh 0
@@ -311,8 +315,8 @@ ext2spice
 ```
 
 Now we need to use our pre-layout spice witht he post-layout parasitics netlist and perform spice simulations.
-- Step I
 Paste the pre-layout netlist of inverter testbench into the magic generated inverter spice netlist
+
 ### Pre- Layout Inverter  Spice Netlist
 ```
 ** sch_path: /home/pranay/Desktop/vsd/Lab1_and/xschem/inverter_pr.sch
