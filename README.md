@@ -289,9 +289,11 @@ The metal input and output pins are imported and the nfet and pfet is imported.
 
 ![symbol layout](https://user-images.githubusercontent.com/118599201/219821677-17b5ccb3-b216-45bc-b53d-c589f8678e3c.PNG)
 
-Now we hover over the pins/fets and press i and then press m at the location we want to place them
 
-Now route the metal1 layer such that the layout is DRC free
+To place pins and FETs in the desired location, hover over them and press "i" to select them, then press "m" to place them. Once you have placed them, use the metal1 layer to route the layout in a way that is free of design rule check (DRC) violations.
+
+
+
 ![lay](https://user-images.githubusercontent.com/118599201/219821839-91ea69ce-7a44-4ef7-bcf6-47c64964be96.png)
 
 Now, go to File --> save and select autowrite. Go to the  window and type the following:
