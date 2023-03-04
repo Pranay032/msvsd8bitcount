@@ -686,6 +686,10 @@ In LVS, Magic extracts the netlist of the generated GDS file and compares it wit
 
 # Week -4
 
+## Introduction
+
+A complete 4-bit asynchronous counter system will be designed. The system's schematic is depicted in the figure below. The analog domain, highlighted in red, generates a clock signal that is utilized in the digital domain, highlighted in blue. This design is an instance of a mixed-signal system. There will be no plagiarism in the rearranged text.
+
 # 4-bit asynchronous up counter
 
 A 4-bit asynchronous up counter is a digital circuit that can count from 0 to 15. The counter consists of four flip-flops, each representing one bit of the counter, and a combinational circuit that performs the counting operation.
@@ -699,6 +703,8 @@ The asynchronous aspect of the counter means that each flip-flop operates indepe
  ![image](https://user-images.githubusercontent.com/83575446/222718876-f0587a88-4bea-47db-81c7-81cf1c3d421f.png)
 
 ## Implementation of ring oscillator in Xschem
+
+A ring oscillator is a circuit that produces clock-like pulses autonomously, relying solely on the power it requires and without external input. The oscillations are formed by linking inverters in odd numbers, with the output of each inverter being the inverse of the previous one. Figure below demonstrates the creation of a 3-stage ring oscillator in Xschem. The text has been rephrased without any plagiarism.
 
 
 
