@@ -1,6 +1,6 @@
 # msvsd8bitcount
 
-# Week -0
+# Week-0
 # Week-1
 # Week-2
 # Week-3
@@ -471,20 +471,63 @@ An outline of steps used to build a chip using OpenROAD is shown below:
 - Place pins (for designs without pads )
 - Place macro cells (RAMs, embedded macros)
 - Insert substrate tap cells
-- Insert power distribution network
-- Macro Placement of macro cells
-- Global placement of standard cells
-- Repair max slew, max capacitance, and max fanout violations and long wires
-- Clock tree synthesis
-- Optimize setup/hold timing
-- Insert fill cells
-- Global routing (route guides for detailed routing)
-- Antenna repair
-- Detailed routing
-- Parasitic extraction
-- Static timing analysis
+- Insert power distribution networkInstalling OpenROAD involves the following steps:
+
+Install the required dependencies such as Tcl/Tk, GCC, Boost, and CMake.
+Clone the OpenROAD repository using Git.
+Build and install the dependencies for OpenROAD.
+Configure and build OpenROAD using CMake.
+Once OpenROAD is installed, the following steps are typically used to build a chip:
+
+Initialize the floorplan by defining the chip size and cell rows.
+Place pins for designs without pads.
+Place macro cells such as RAMs and embedded macros.
+Insert substrate tap cells.
+Insert the power distribution network.
+Place macro cells using macro placement.
+Place standard cells using global placement.
+Repair violations and optimize timing.
+Perform clock tree synthesis.
+Optimize setup/hold timing.
+Insert fill cells.
+Perform global routing and route guides for detailed routing.
+Repair any antenna violations.
+Perform detailed routing.
+Perform parasitic extraction.
+Perform static timing analysis.
+
+
 
 ## Steps to install openROAD are
+
+Here are the steps to install OpenROAD:
+
+Install dependencies: OpenROAD has several dependencies that need to be installed before installation. These include Git, CMake, Python 3, Tcl, and other tools. Install these dependencies using your system's package manager.
+
+Clone OpenROAD repository: Clone the OpenROAD repository from GitHub using the following command:
+
+git clone https://github.com/The-OpenROAD-Project/OpenROAD.git
+Build OpenROAD: Change to the OpenROAD directory and build the project using CMake and Make. The following commands will build OpenROAD:
+
+
+cd OpenROAD
+mkdir build
+cd build
+cmake ..
+make
+Set up environment variables: Add the OpenROAD binaries to your PATH and set the OPENROAD environment variable to point to the OpenROAD installation directory. The following commands will set up the environment variables:
+
+export PATH=$PATH:/path/to/OpenROAD/bin
+export OPENROAD=/path/to/OpenROAD
+Verify installation: Verify that OpenROAD is installed correctly by running the following command:
+
+
+openroad -version
+This should print the version number of OpenROAD.
+
+Once OpenROAD is installed, you can use it to perform chip physical design tasks, such as floorplanning, placement, routing, and static timing analysis.
+
+
 
 ```
 cd
@@ -498,7 +541,32 @@ cd OpenROAD-flow-scripts
 export OPENROAD=~/OpenROAD-flow-scripts/tools/OpenROAD
 export PATH=~/OpenROAD-flow-scripts/tools/install/OpenROAD/bin:~/OpenROAD-flow-scripts/tools/install/yosys/bin:~/OpenROAD-flow-scripts/tools/install/LSOracle/bin:$PATH
 ```
+
 ## Intalling OpenFASOC
+
+git clone https://github.com/magroski/OpenFASoC.git
+This will create a local copy of the OpenFASoC repository on your machine.
+
+Next, navigate into the OpenFASoC directory and run the setup script:
+
+cd OpenFASoC
+./setup.sh
+This will download and install the required dependencies, including OpenROAD and other EDA tools.
+
+Once the setup is complete, you can generate a sample design by running the following command:
+go
+
+make gen_skel
+This will generate a skeleton design with a simple ring oscillator. You can modify the design specifications in the config.mk file and run make to generate a custom design.
+
+To run the full OpenFASoC flow on your custom design, run:
+go
+
+make openfasc
+This will run the entire design flow, from Verilog generation to GDSII layout. The final output will be a GDSII file located in the output directory.
+
+Note that the OpenFASoC flow is highly customizable, and you can modify various aspects of the design flow by editing the configuration files in the config directory.
+
 
 OpenFASoC is a project focused on automated analog generation from user specification to GDSII with fully open-sourced tools. It is led by a team of researchers at the University of Michigan and is inspired from FASoC which sits on proprietary software.
 
@@ -524,9 +592,7 @@ An overview of how the Temperature Sensor Generator (temp-sense-gen) works inter
 ## Circuit
 This generator creates a compact mixed-signal temperature sensor based on the topology from this paper. It consists of a ring oscillator whose frequency is controlled by the voltage drop over a MOSFET operating in subthreshold regime, where its dependency on temperature is exponential.
 
-<p align="center">
-  <img width="1000" height="500" src="![01](https://user-images.githubusercontent.com/118599201/222858509-95dbf998-2c9f-401b-8c36-9aeec45be659.png)">
-</p>
+![001](https://user-images.githubusercontent.com/118599201/222863355-95233bcc-183f-4009-8086-7a3a812e22a6.png)
 
 The physical implementation of the analog blocks in the circuit is done using two manually designed standard cells:
 
@@ -552,7 +618,8 @@ To generate the default circuit, navigate to the openfasoc/generators/temp-sense
 make sky130hd_temp
 
 The generation of the default circuit's physical design can be split into three stages: Verilog generation, RTL-to-GDS flow using OpenROAD, and post-layout verification involving DRC and LVS.
-#Verilog Generation
+
+### Verilog Generation
 For Verilog generation, execute the command make sky130hd_temp_verilog. The generator first parses the user's requirements into a high-level circuit description or verilog by reading from a JSON spec file located in the temp-sense-gen repository. The JSON file allows for specifying power, area, maximum error (temperature result accuracy), optimization option (to choose which option to prioritize), and operating temperature range (minimum and maximum operating temperature values). The operating temperature range and optimization must be specified, while other items can be left blank.
 
 The generator uses this model file to determine the necessary modifications to meet the specifications, such as the number of headers and slc. The generator references the model file in an iterative process until it meets the specifications or fails. It then substitutes the specifics into the template verilog files to generate a verilog description.
@@ -594,15 +661,10 @@ The tempsenseInst_domain_insts.txt file contains all instances to be placed in t
 ### Placement
 Placement takes place after the floorplan is ready and has two phases: global placement and detailed placement. The output of this phase will have all instances placed in their corresponding voltage domain, ready for routing.
 
-
-
 ### Routing
 The routing process consists of two phases: global routing and detailed routing. Just before global routing, OpenFASoC runs the pre_global_route.tcl script.
 
 The script sources two additional files. The first file, add_ndr_rules.tcl, includes an NDR (Non-Default Rules) rule to the VIN net to optimize the connections between the voltage domains. The second file, create_custom_connections.tcl, establishes the link between the VIN net and the HEADER instances.
-
-
-
 
 #### Final layout after routing:
 
