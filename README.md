@@ -515,6 +515,7 @@ mkdir build
 cd build
 cmake ..
 make
+
 Set up environment variables: Add the OpenROAD binaries to your PATH and set the OPENROAD environment variable to point to the OpenROAD installation directory. The following commands will set up the environment variables:
 
 export PATH=$PATH:/path/to/OpenROAD/bin
@@ -545,24 +546,28 @@ export PATH=~/OpenROAD-flow-scripts/tools/install/OpenROAD/bin:~/OpenROAD-flow-s
 ## Intalling OpenFASOC
 
 git clone https://github.com/magroski/OpenFASoC.git
+
 This will create a local copy of the OpenFASoC repository on your machine.
 
 Next, navigate into the OpenFASoC directory and run the setup script:
 
 cd OpenFASoC
 ./setup.sh
+
 This will download and install the required dependencies, including OpenROAD and other EDA tools.
 
 Once the setup is complete, you can generate a sample design by running the following command:
 go
 
 make gen_skel
+
 This will generate a skeleton design with a simple ring oscillator. You can modify the design specifications in the config.mk file and run make to generate a custom design.
 
 To run the full OpenFASoC flow on your custom design, run:
 go
 
 make openfasc
+
 This will run the entire design flow, from Verilog generation to GDSII layout. The final output will be a GDSII file located in the output directory.
 
 Note that the OpenFASoC flow is highly customizable, and you can modify various aspects of the design flow by editing the configuration files in the config directory.
