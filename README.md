@@ -1,4 +1,11 @@
 # msvsd8bitcount
+
+# Week -0
+# Week-1
+# Week-2
+# Week-3
+
+
 ## WEEK-0 - Getting the tools
 
 To adequately utilize the open source skywater130 pdk and understand the design flow, we first require to install all the tools, which are
@@ -449,3 +456,205 @@ Input pulse specification in both
 - Fall Time- 10ps
 - Pre-Layout Delay Vout-Vin - 11.29ps
 - Post-Layout Delay Vout-Vin - 12.14ps
+
+
+
+# Week -3
+
+## Intalling OpenROAD
+
+OpenROAD is an integrated chip physical design tool that takes a design from synthesized Verilog to routed layout.
+
+An outline of steps used to build a chip using OpenROAD is shown below:
+
+- Initialize floorplan - define the chip size and cell rows
+- Place pins (for designs without pads )
+- Place macro cells (RAMs, embedded macros)
+- Insert substrate tap cells
+- Insert power distribution network
+- Macro Placement of macro cells
+- Global placement of standard cells
+- Repair max slew, max capacitance, and max fanout violations and long wires
+- Clock tree synthesis
+- Optimize setup/hold timing
+- Insert fill cells
+- Global routing (route guides for detailed routing)
+- Antenna repair
+- Detailed routing
+- Parasitic extraction
+- Static timing analysis
+
+## Steps to install openROAD are
+
+```
+cd
+git clone --recursive https://github.com/The-OpenROAD-Project/OpenROAD.git
+cd OpenROAD
+sudo ./etc/DependencyInstaller.sh
+cd
+git clone --recursive https://github.com/The-OpenROAD-Project/OpenROAD-flow-scripts
+cd OpenROAD-flow-scripts
+./build_openroad.sh –local
+export OPENROAD=~/OpenROAD-flow-scripts/tools/OpenROAD
+export PATH=~/OpenROAD-flow-scripts/tools/install/OpenROAD/bin:~/OpenROAD-flow-scripts/tools/install/yosys/bin:~/OpenROAD-flow-scripts/tools/install/LSOracle/bin:$PATH
+```
+## Intalling OpenFASOC
+
+OpenFASoC is a project focused on automated analog generation from user specification to GDSII with fully open-sourced tools. It is led by a team of researchers at the University of Michigan and is inspired from FASoC which sits on proprietary software.
+
+The tool is comprised of analog and mixed-signal circuit generators, which automatically create a physical design based on user specifications.
+
+
+- First, cd into a directory of your choice and clone the OpenFASoC repository:
+
+`git clone https://github.com/idea-fasoc/openfasoc`
+
+- Now go to the home location of this repository (where the README.rst file is located) and run `sudo ./dependencies.sh.`
+- Or follow the below steps
+```
+cd
+git clone https://github.com/idea-fasoc/openfasoc
+cd openfasoc
+sudo ./dependencies.sh
+
+```
+# Temperature Sensor Auxiliary Cells
+An overview of how the Temperature Sensor Generator (temp-sense-gen) works internally in OpenFASoC
+
+## Circuit
+This generator creates a compact mixed-signal temperature sensor based on the topology from this paper. It consists of a ring oscillator whose frequency is controlled by the voltage drop over a MOSFET operating in subthreshold regime, where its dependency on temperature is exponential.
+
+<p align="center">
+  <img width="1000" height="500" src="![01](https://user-images.githubusercontent.com/118599201/222858509-95dbf998-2c9f-401b-8c36-9aeec45be659.png)">
+</p>
+
+The physical implementation of the analog blocks in the circuit is done using two manually designed standard cells:
+
+1. HEADER cell, containing the transistors in subthreshold operation;
+
+2. SLC cell, containing the Split-Control Level Converter.
+
+The gds and lef files of HEADER and SLC cells are pre-created before the start of the Generator flow.
+
+The layout of the HEADER cell is shown below:
+![01](https://user-images.githubusercontent.com/118599201/222858509-95dbf998-2c9f-401b-8c36-9aeec45be659.png)
+
+The layout of the SLC cell is shown below:
+
+![02](https://user-images.githubusercontent.com/118599201/222858514-8349ff9e-a589-4d0f-b534-2c64ac573a6b.png)
+
+
+## OpenFASOC flow for Temperature Sensor Generation
+To modify the specifications of a circuit, you can edit the test.json specfile located in the generators/temp-sense-gen/ folder.
+
+To generate the default circuit, navigate to the openfasoc/generators/temp-sense-gen/ directory and execute the following command:
+
+make sky130hd_temp
+
+The generation of the default circuit's physical design can be split into three stages: Verilog generation, RTL-to-GDS flow using OpenROAD, and post-layout verification involving DRC and LVS.
+#Verilog Generation
+For Verilog generation, execute the command make sky130hd_temp_verilog. The generator first parses the user's requirements into a high-level circuit description or verilog by reading from a JSON spec file located in the temp-sense-gen repository. The JSON file allows for specifying power, area, maximum error (temperature result accuracy), optimization option (to choose which option to prioritize), and operating temperature range (minimum and maximum operating temperature values). The operating temperature range and optimization must be specified, while other items can be left blank.
+
+The generator uses this model file to determine the necessary modifications to meet the specifications, such as the number of headers and slc. The generator references the model file in an iterative process until it meets the specifications or fails. It then substitutes the specifics into the template verilog files to generate a verilog description.
+
+The test.json file shown in the screenshot below corresponds to the temp_sense_gen.
+
+![03](https://user-images.githubusercontent.com/118599201/222858517-2b060900-74dc-46c4-b5c0-5887ed5cba71.png)
+
+The generator calculates the required number of headers and inverters to minimize the error based on the operating temperature range. Temperature is varied from -20 C to 100 C in this file.
+
+To begin the generation process, the generator uses a Verilog template of the temperature sensor circuit located in temp-sense-gen/src/. The template files contain lines marked with @@, which are replaced based on the specifications.
+
+To replace these lines with the correct circuit elements, temp-sense-gen utilizes cells from the selected technology. The nearest-neighbor approach with experimental data from models/modelfile.csv is used to optimize the number of inverters in the ring oscillator and HEADER cells in parallel.
+
+![04](https://user-images.githubusercontent.com/118599201/222859730-9c398538-ad5a-421b-86f4-38804a8cf76c.png)
+
+As depicted in the provided image, the tool aims to minimize the error by iteratively adjusting the number of inverters and headers for the specified temperature range.
+
+Upon executing the make sky130hd_temp_verilog command, the verilog files for counter.v, TEMP_ANALOG_hv.nl.v, TEMP_ANALOG_lv.nl.v are generated in the src folder.
+
+Using the generic template, additional blocks of counter, TEMP_ANALOG_hv.nl.v, TEMP_ANALOG_lv.nl.v are produced in the src folder. For a temperature range of -20C to 100C, the generator determines that three header files are necessary to meet the specified requirements.
+
+### Synthesis
+
+The OpenROAD Flow commences with a flow configuration file, config.mk, as well as the chosen platform (such as sky130hd) and Verilog files that were generated in the previous steps.
+
+Next, Yosys is used to conduct synthesis, which identifies the appropriate circuit implementation from the cells available in the platform.
+
+### Floorplan
+To generate the floorplan for the physical design, OpenROAD is utilized. It necessitates a description of the power delivery network in pdn.cfg.
+
+The temperature sensor design comprises two voltage domains: VDD, which powers the majority of the circuit, and VIN, which powers the ring oscillator and serves as the output of the HEADER cells. The floorplan.tcl script is used to create these voltage domains.
+
+Lastly, the script read_domain_instances.tcl is sourced, which assigns the relevant instances to the TEMP_ANALOG domain group. It obtains the required instances from the DOMAIN_INSTS_LIST variable, which is defined as tempsenseInst_domain_insts.txt in the config.mk file. This step ensures that the cells are placed in the correct voltage domain during the detailed placement phase.
+
+
+The tempsenseInst_domain_insts.txt file contains all instances to be placed in the TEMP_ANALOG domain (VIN voltage tracks). These cells are the components of the ring oscillator, including the inverters whose quantity may vary according to the optimization results. Thus, this file actually gets generated during temp-sense-gen.py.
+
+### Placement
+Placement takes place after the floorplan is ready and has two phases: global placement and detailed placement. The output of this phase will have all instances placed in their corresponding voltage domain, ready for routing.
+
+
+
+### Routing
+The routing process consists of two phases: global routing and detailed routing. Just before global routing, OpenFASoC runs the pre_global_route.tcl script.
+
+The script sources two additional files. The first file, add_ndr_rules.tcl, includes an NDR (Non-Default Rules) rule to the VIN net to optimize the connections between the voltage domains. The second file, create_custom_connections.tcl, establishes the link between the VIN net and the HEADER instances.
+
+
+
+
+#### Final layout after routing:
+
+![05](https://user-images.githubusercontent.com/118599201/222860726-f6e6de20-2c94-469a-9a5b-71025a642776.png)
+
+### Post-layout verification
+
+Once the design is generated, OpenFASoC proceeds to run DRC (Design Rule Check) and LVS (Layout vs Schematic) to ensure that the circuit is both manufacturable and aligns with the specified design. The flow/Makefile runs the targets magic_drc and netgen_lvs using make.
+
+In DRC, Magic software utilizes the generated GDS file to verify if there are any violations of constraints. If there are any errors, a report is written and stored under temp-sense-gen/flow/reports/.
+
+In LVS, Magic extracts the netlist of the generated GDS file and compares it with the original circuit netlist to ensure that the physical implementation was done correctly. Files generated from the layout extraction are stored under temp-sense-gen/flow/objects/.
+
+
+# Week -4
+
+# 4-bit asynchronous up counter
+
+A 4-bit asynchronous up counter is a digital circuit that can count from 0 to 15. The counter consists of four flip-flops, each representing one bit of the counter, and a combinational circuit that performs the counting operation.
+
+At the rising edge of the clock signal, the first flip-flop receives the input signal and stores it. The output of the first flip-flop is then fed as an input to the second flip-flop, which stores the previous state and increments its own output by one. This process continues until the fourth flip-flop increments its output by one, resulting in the counter reaching the maximum value of 15.
+
+The asynchronous aspect of the counter means that each flip-flop operates independently, allowing the counter to increment without relying on a global clock signal. However, this can also lead to glitches in the output if the flip-flops do not transition at the same time. To prevent glitches, a synchronization circuit can be added to the counter.
+ 
+ ## Circuit diagram of 4-Bit Asynchronous Up Counter
+ 
+ ![image](https://user-images.githubusercontent.com/83575446/222718876-f0587a88-4bea-47db-81c7-81cf1c3d421f.png)
+
+## Implementation of ring oscillator in Xschem
+
+
+
+## Post layout characterization of ring oscillator using ALIGN
+
+
+
+
+
+
+Magic Tool is used to post layout Spice file. SPICE file can be simulated in NGSPICE and compare with prelayout.
+
+- Open terminal in work directory where our final gds stored.
+
+set PDK ROOT for Magic using the command -
+```
+export PDK_ROOT=/path/to/your/pdks/
+```
+
+Then type `magic` in terminal which open magic.
+
+- Then goto file and press read GDS and select our gds file
+- Place the curser outside layout press `s` which select entire layout.
+- Then goto tkcon and type `ext2spice`
+- post layout spice file is created in work directory
+
