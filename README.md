@@ -706,7 +706,7 @@ The asynchronous aspect of the counter means that each flip-flop operates indepe
 
 A ring oscillator is a circuit that produces clock-like pulses autonomously, relying solely on the power it requires and without external input. The oscillations are formed by linking inverters in odd numbers, with the output of each inverter being the inverse of the previous one. Figure below demonstrates the creation of a 3-stage ring oscillator in Xschem. The text has been rephrased without any plagiarism.
 
-
+![mar-4](https://user-images.githubusercontent.com/118599201/222870143-0dddf7ee-b102-4c5d-bb70-0be6a7735145.PNG)
 
 ## Post layout characterization of ring oscillator using ALIGN
 
